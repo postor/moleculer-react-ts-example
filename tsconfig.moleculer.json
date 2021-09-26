@@ -8,14 +8,14 @@
     "sourceMap": true,
     "pretty": true,
     "target": "es6",
-    "outDir": "dist",
-    "jsx": "react-jsx"
+    "outDir": "dist"
   },
   "include": [
     "./**/*"
   ],
   "exclude": [
     "node_modules/**/*",
-    "test"
+    "test",
+    "web"
   ]
 }
