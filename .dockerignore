@@ -4,3 +4,6 @@ Dockerfile
 node_modules
 test
 .vscode
+public/*
+dist/*
+data/*

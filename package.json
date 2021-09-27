@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "My Moleculer-based microservices project",
   "scripts": {
-    "build": "tsc --build tsconfig.json",
+    "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "tsc --build tsconfig.moleculer.json",
     "build:frontend": "webpack --mode=production",
-    "dev": "ts-node -P tsconfig.moleculer.json ./node_modules/moleculer/bin/moleculer-runner.js --hot --repl --config moleculer.config.ts services/**/*.service.ts",
+    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:frontend": "webpack serve --mode=development --open",
+    "dev:backend": "ts-node -P tsconfig.moleculer.json ./node_modules/moleculer/bin/moleculer-runner.js --hot --repl --config moleculer.config.ts services/**/*.service.ts",
     "start": "moleculer-runner --config dist/moleculer.config.js",
     "cli": "moleculer connect NATS",
     "ci": "jest --watch",
@@ -25,6 +27,7 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.15.0",
     "@types/jest": "^25.1.4",
     "@types/mkdirp": "^1.0.0",
     "@types/node": "^13.9.8",
@@ -36,6 +39,8 @@
     "@typescript-eslint/parser": "^2.26.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-auto-import": "^1.1.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "concurrently": "^6.2.1",
     "css-loader": "^6.3.0",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
@@ -49,7 +54,8 @@
     "ts-node": "^8.8.1",
     "typescript": "^3.8.3",
     "webpack": "^5.54.0",
-    "webpack-cli": "^4.8.0"
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -62,7 +68,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.3.0"
+    "react-router-dom": "^5.3.0",
+    "swr": "^1.0.1"
   },
   "engines": {
     "node": ">= 10.x.x"

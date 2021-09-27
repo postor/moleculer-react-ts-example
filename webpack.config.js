@@ -1,12 +1,18 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const { join } = require('path')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // installed via npm
 
 module.exports = {
-  entry: './web/app.tsx',
+  entry: ['./web/app.tsx'],
   output: {
-    path: join(__dirname, 'public')
+    path: join(__dirname, 'public'),
+    publicPath: '/'
+  },
+  devServer: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
   },
   module: {
     rules: [
@@ -21,8 +27,9 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: [
+              "@babel/preset-typescript",
+              "@babel/preset-react",
               '@babel/preset-env',
-              "@babel/preset-react"
             ],
             plugins: [
               [
@@ -45,12 +52,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(__dirname, 'web', 'index.html')
     }),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['!.gitignore']
+    }),
   ],
   optimization: {
     splitChunks: {
-      // include all types of chunks
       chunks: 'all',
     },
-  },
+  }
 }
